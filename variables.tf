@@ -19,18 +19,9 @@ variable "ami_name" {
 }
 
 variable "instance_type" {
+    # change to t2.medium for game
   type = string
-  default = "t2.medium"
-}
-
-variable "cpu_core" {
-  type = number
-  default = 2
-}
-
-variable "cpu_threads" {
-  type = number
-  default = 2
+  default = "t2.micro"
 }
 
 variable "tag_names" {

@@ -27,10 +27,5 @@ resource "aws_instance" "test_server" {
   instance_type = var.instance_type
   subnet_id     = aws_subnet.example.id
 
-  cpu_options {
-    core_count       = var.cpu_core
-    threads_per_core = var.cpu_threads
-  }
-
   tags = var.tag_names
 }
