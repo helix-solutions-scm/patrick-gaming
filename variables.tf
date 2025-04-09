@@ -5,7 +5,12 @@ variable "cidr_block" {
 
 variable "availability_zone" {
   type = string
-  default = "us-west-2a"
+  default = "us-east-1a"
+}
+
+variable "public_ip" {
+  type = bool
+  default = true
 }
 
 variable "ami_owners" {

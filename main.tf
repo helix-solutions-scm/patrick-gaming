@@ -8,6 +8,7 @@ resource "aws_subnet" "test_subnet" {
   vpc_id            = aws_vpc.test_vpc.id
   cidr_block        = var.cidr_block
   availability_zone = var.availability_zone
+  map_public_ip_on_launch = var.public_ip
 
   tags = var.tag_names
 }
@@ -25,7 +26,7 @@ data "aws_ami" "amzn-linux-2023-ami" {
 resource "aws_instance" "test_server" {
   ami           = data.aws_ami.amzn-linux-2023-ami.id
   instance_type = var.instance_type
-  subnet_id     = aws_subnet.example.id
+  subnet_id     = aws_subnet.test_subnet.id
 
   tags = var.tag_names
 }
