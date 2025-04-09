@@ -1,14 +1,15 @@
-resource "aws_vpc" "test_vpc" {
-  cidr_block = var.cidr_block
+module "vpc" {
+  source = var.vpc_source
 
-  tags = var.tag_names
-}
+  name = var.vpc_name
+  cidr = var.cidr_block
 
-resource "aws_subnet" "test_subnet" {
-  vpc_id            = aws_vpc.test_vpc.id
-  cidr_block        = var.cidr_block
-  availability_zone = var.availability_zone
-  map_public_ip_on_launch = var.public_ip
+  azs             = var.availability_zone
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 
   tags = var.tag_names
 }

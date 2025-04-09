@@ -3,9 +3,39 @@ variable "cidr_block" {
     default = "172.16.0.0/16"
 }
 
-variable "availability_zone" {
+variable "vpc_source" {
   type = string
-  default = "us-east-1a"
+  default = "terraform-aws-modules/vpc/aws"
+}
+
+variable "vpc_name" {
+  type = string
+  default = "GrÜÜbis-test"
+}
+
+variable "availability_zone" {
+  type = list(string)
+  default = [ "us-east-1a" ]
+}
+
+variable "private_subnets" {
+  type = list(string)
+  default = ["172.16.1.0/24"]
+}
+
+variable "public_subnets" {
+  type = list(string)
+  default = [ "172.16.2.0/24" ]
+}
+
+variable "enable_nat_gateway" {
+  type = bool
+  default = true
+}
+
+variable "enable_vpn_gateway" {
+  type = bool
+  default = true
 }
 
 variable "public_ip" {
