@@ -32,3 +32,20 @@ variable "cpu_threads" {
   type = number
   default = 2
 }
+
+variable "tag_names" {
+  type = map(string)
+  default = {
+    Name = "GrÜÜbis-Test"
+  }
+}
+
+variable "filter_name" {
+  type = string
+  default = "name"
+}
+
+variable "most_recent" {
+  type = bool
+  default = true
+}

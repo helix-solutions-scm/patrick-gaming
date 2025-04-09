@@ -1,27 +1,23 @@
 resource "aws_vpc" "test_vpc" {
   cidr_block = var.cidr_block
 
-  tags = {
-    Name = "Test-VPC"
-  }
+  tags = var.tag_names
 }
 
 resource "aws_subnet" "test_subnet" {
-  vpc_id            = aws_vpc.example.id
+  vpc_id            = aws_vpc.test_vpc.id
   cidr_block        = var.cidr_block
   availability_zone = var.availability_zone
 
-  tags = {
-    Name = "Test-Subnet"
-  }
+  tags = var.tag_names
 }
 
 data "aws_ami" "amzn-linux-2023-ami" {
-  most_recent = true
+  most_recent = var.most_recent
   owners      = var.ami_owners
 
   filter {
-    name   = "test_ami"
+    name   = var.filter_name
     values = var.ami_name
   }
 }
@@ -36,7 +32,5 @@ resource "aws_instance" "test_server" {
     threads_per_core = var.cpu_threads
   }
 
-  tags = {
-    Name = "Test-Server"
-  }
+  tags = var.tag_names
 }
