@@ -29,34 +29,12 @@ resource "aws_instance" "test_server" {
   instance_type = var.instance_type
   subnet_id     = module.vpc.public_subnets[0]
   associate_public_ip_address = var.public_ip
-
+  user_data_base64 = base64encode(file("${path.module}/games/${var.game}"))
     
 
   tags = var.tag_names
 }
 
-# resource "aws_security_group" "allow_tls" {
-#   name        = var.aws_security_group_name
-#   description = var.aws_security_group_description
-#   vpc_id      = module.vpc.default_vpc_id
-
-#   tags = var.tag_names
-# }
-
-# resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-#   security_group_id = aws_security_group.allow_tls.id
-#   cidr_ipv4         = var.cidr_ipv4
-# #   from_port         = var.from_port
-#   ip_protocol       = var.inbound_ip_protocol
-# #   to_port           = var.to_port
-
-# }
-
-# resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-#   security_group_id = aws_security_group.allow_tls.id
-#   cidr_ipv4         = var.cidr_ipv4
-#   ip_protocol       = var.outbound_ip_protocol # semantically equivalent to all ports
-# }
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = module.vpc.default_vpc_id
