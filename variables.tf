@@ -45,7 +45,12 @@ variable "ami_owners" {
 
 variable "ami_name" {
   type = list(string)
-  default = ["al2023-ami-2023.*-x86_64"]
+  default = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-*"]
+}
+
+variable "virtualization_type" {
+  type = list(string)
+  default = [ "hvm" ]
 }
 
 variable "instance_type" {
@@ -104,4 +109,29 @@ variable "cidr_ipv4" {
 variable "outbound_ip_protocol" {
   type = string
   default = "-1"
+}
+
+variable "game" {
+  type = string
+  default = "barotrauma"
+}
+
+variable "key_name" {
+  type = string
+  default = "gaming"
+}
+
+variable "userdatareplace" {
+  type = bool
+  default = true
+}
+
+variable "settings_file" {
+  type = string
+  default = "serversettings.xml"
+}
+
+variable "bucket_name" {
+  type = string
+  default = "settings-bucket-gruubis"
 }

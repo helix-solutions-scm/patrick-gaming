@@ -14,23 +14,49 @@ module "vpc" {
   tags = var.tag_names
 }
 
-data "aws_ami" "amzn-linux-2023-ami" {
+resource "aws_s3_bucket" "test_bucket" {
+  bucket = var.bucket_name
+
+  tags = var.tag_names
+}
+
+resource "aws_s3_object" "object" {
+  bucket = aws_s3_bucket.test_bucket.id
+  key    = var.settings_file
+  source = "${path.module}/games/settings/${var.settings_file}"
+
+  etag = filemd5("${path.module}/games/settings/${var.settings_file}")
+}
+
+data "aws_ami" "ubuntu" {
   most_recent = var.most_recent
   owners      = var.ami_owners
+  
+  filter {
+    name   = "name"
+    values = var.ami_name
+  }
 
   filter {
-    name   = var.filter_name
-    values = var.ami_name
+    name   = "virtualization-type"
+    values = var.virtualization_type
   }
 }
 
+resource "aws_key_pair" "gaming_test" {
+  key_name   = var.key_name
+  public_key = file("${path.module}/${var.key_name}.pub")
+}
+
 resource "aws_instance" "test_server" {
-  ami           = data.aws_ami.amzn-linux-2023-ami.id
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   subnet_id     = module.vpc.public_subnets[0]
   associate_public_ip_address = var.public_ip
-  user_data_base64 = base64encode(file("${path.module}/games/${var.game}"))
-    
+  key_name = aws_key_pair.gaming_test.key_name
+  user_data_replace_on_change = var.userdatareplace
+  user_data_base64 = base64encode(file("${path.module}/games/${var.game}.sh"))
+  
 
   tags = var.tag_names
 }
