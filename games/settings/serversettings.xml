@@ -2,7 +2,7 @@
 <serversettings
   port="27015"
   queryport="27016"
-  password=""
+  password="grubbis-gaming"
   enableupnp="false"
   HiddenSubs=""
   AllowedRandomMissionTypes="AbandonedOutpostAssassinate,AbandonedOutpostMonsters,Beacon,Cargo,ClearAlienRuins,EliminateThalamus,Escort,KingOfTheHull,Mineral,Monster,Nest,OutpostCombat,OutpostDestroy,OutpostRescue,Pirate,SalvageCave,SalvageRuin,SalvageWreck,ScanAlienRuins,SubVsSubCombat,jailbreak"

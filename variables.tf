@@ -118,7 +118,7 @@ variable "game" {
 
 variable "key_name" {
   type = string
-  default = "gaming"
+  default = "test_key"
 }
 
 variable "userdatareplace" {
@@ -134,4 +134,19 @@ variable "settings_file" {
 variable "bucket_name" {
   type = string
   default = "settings-bucket-gruubis"
+}
+
+variable "iam_role_policy_name" {
+  type = string
+  default = "test_policy"
+}
+
+variable "iam_role_name" {
+  type = string
+  default = "test_role"
+}
+
+variable "test_profile_name" {
+  type = string
+  default = "test_profile"
 }

@@ -14,6 +14,50 @@ module "vpc" {
   tags = var.tag_names
 }
 
+resource "aws_iam_role_policy" "test_policy" {
+  name = var.iam_role_policy_name
+  role = aws_iam_role.test_role.id
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:List*",
+          "s3:Get*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role" "test_role" {
+  name = var.iam_role_name
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "test_profile" {
+  name = var.test_profile_name
+  role = aws_iam_role.test_role.name
+}
+
 resource "aws_s3_bucket" "test_bucket" {
   bucket = var.bucket_name
 
@@ -43,7 +87,7 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-resource "aws_key_pair" "gaming_test" {
+resource "aws_key_pair" "test_key_pair" {
   key_name   = var.key_name
   public_key = file("${path.module}/${var.key_name}.pub")
 }
@@ -53,10 +97,11 @@ resource "aws_instance" "test_server" {
   instance_type = var.instance_type
   subnet_id     = module.vpc.public_subnets[0]
   associate_public_ip_address = var.public_ip
-  key_name = aws_key_pair.gaming_test.key_name
+  key_name = aws_key_pair.test_key_pair.key_name
   user_data_replace_on_change = var.userdatareplace
   user_data_base64 = base64encode(file("${path.module}/games/${var.game}.sh"))
   
+  iam_instance_profile = aws_iam_instance_profile.test_profile.name
 
   tags = var.tag_names
 }
